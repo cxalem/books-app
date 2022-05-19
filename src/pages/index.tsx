@@ -14,7 +14,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="flex w-full flex-col items-center justify-center px-0 text-center">
-        <div className='relative px-10 grid grid-cols-1 justify-items-center w-full mb-10 gap-4 max-h-28'>
+        <div className='relative flex flex-col items-center justify-items-center w-full mb-10 gap-4 max-h-28 md:flex-row md:w-full md:px-0 md:max-w-screen-md md:justify-between lg:max-w-screen-lg'>
           <SearchBar />
           <FilterBar />
         </div>

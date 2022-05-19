@@ -7,20 +7,11 @@ type Props = {}
 
 const BookCard: React.FC<Props> = ({}) => {
   return (
-    <div className="flex w-full max-w-3xl gap-4 bg-faved py-4 px-6 border-t border-main-bg hover:bg-opacity-80">
-      <div className='hidden'>
-        <Image
-          src="https://www.gutenberg.org/cache/epub/1342/pg1342.cover.medium.jpg"
-          alt="Book cover"
-          width={116}
-          height={166}
-          className="rounded-lg shadow-lg"
-        />
-      </div>
+    <div className="flex w-full max-w-3xl gap-4 bg-faved py-4 px-6 border-t border-main-bg hover:bg-opacity-80 md:rounded-xl md:py-6 md:shadow-lg md:border-t-transparent">
       <div className="flex w-full flex-col justify-between">
         <div className="flex flex-col w-full justify-between">
-          <div className='flex w-full justify-between'>
-            <h2 className="text-primary font-bold">Pride and Prejudice</h2>
+          <div className='flex w-full justify-between items-center'>
+            <h2 className="text-primary font-bold md:text-lg">Pride and Prejudice</h2>
             <Faved />
           </div>
           <div className='flex gap-1'>
