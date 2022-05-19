@@ -1,10 +1,20 @@
 module.exports = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
+    "./src/pages/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "primary": "#F0F3FF",
+        "card-bg": "#171830",
+        "main-bg": "#0C0D1C",
+        "faved": "#322659",
+      },
+      maxWidth: {
+        "xxs":"16rem"
+      }
+    },
   },
   plugins: [],
 }
