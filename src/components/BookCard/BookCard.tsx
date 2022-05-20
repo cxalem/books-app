@@ -12,14 +12,14 @@ type Props = {
   subjects: string[]
   bookUri: any
   id: number
+  faved: boolean
 }
 
-const BookCard: React.FC<Props> = ({ title, author, subjects, bookUri, id }) => {
-  const [faved, setFaved] = useState(false)
-  const { setFavedBooks, newFav } = useContext(BooksContext)
+const BookCard: React.FC<Props> = ({ title, author, subjects, bookUri, id, faved }) => {
+  const { toggleFav } = useContext(BooksContext)
 
   const handleFav = (e: { currentTarget: any }) => {
-    setFaved(!faved)
+    toggleFav(id)
   }
   
   const filteredSubjects = subjects.map((subject: string) =>
@@ -38,7 +38,7 @@ const BookCard: React.FC<Props> = ({ title, author, subjects, bookUri, id }) => 
             <h2 className="max-w-xxs text-left font-bold text-primary md:max-w-full md:text-lg">
               {title}
             </h2>
-            <button data-title={`${title}`} data-author={`${author}`} data-subject={`${filteredSubjects}`} data-id={`${id}`} onClick={handleFav}>
+            <button data-id={`${id}`} onClick={handleFav}>
               {faved ? <Faved /> : <Unfaved />}
             </button>
           </div>

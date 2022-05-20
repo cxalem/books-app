@@ -1,14 +1,22 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Listbox } from '@headlessui/react'
 import Arrow from '../Icons/Arrow'
+import { BooksContext } from '../../context/BooksContext'
 
-type Props = {
-  booksData: any
-}
+type Props = {}
 
-const FilterBar: React.FC<Props> = ({ booksData }) => {
+const FilterBar: React.FC<Props> = ({}) => {
+  const { selectedAuthor, setSelectedAuthor, setSearch, booksData } =
+    useContext(BooksContext)
   const { results } = booksData
-  const [selectedAuthor, setSelectedAuthor] = useState<any>('Select Author...')
+
+  useEffect(() => {
+    if (selectedAuthor === 'Select Author...') {
+      setSearch('')
+    } else {
+      setSearch(selectedAuthor)
+    }
+  }, [selectedAuthor])
 
   return (
     <Listbox value={selectedAuthor} onChange={setSelectedAuthor}>
@@ -17,22 +25,28 @@ const FilterBar: React.FC<Props> = ({ booksData }) => {
         <Arrow />
       </Listbox.Button>
       <Listbox.Options className="absolute top-32 z-10 w-full max-w-xxs shadow-md md:top-16 md:right-0">
-        {results.map(({ agents }: any) =>
-          agents.map(({ person, id }: any) => (
-            <Listbox.Option key={id} value={person}>
-              {({ active, selected }) => {
-                return (
-                  <li
-                    className={`cursor-pointer} border-t border-main-bg py-1 ${
-                      active ? 'bg-faved text-white' : 'bg-card-bg text-primary'
-                    }`}
-                  >
-                    {person}
-                  </li>
-                )
-              }}
-            </Listbox.Option>
-          ))
+        {results ? (
+          results.map(({ agents }: any) =>
+            agents.map(({ person, id }: any) => (
+              <Listbox.Option key={id} value={person}>
+                {({ active, selected }) => {
+                  return (
+                    <li
+                      className={`cursor-pointer border-t border-main-bg py-1 ${
+                        active
+                          ? 'bg-faved text-white'
+                          : 'bg-card-bg text-primary'
+                      }`}
+                    >
+                      {person}
+                    </li>
+                  )
+                }}
+              </Listbox.Option>
+            ))
+          )
+        ) : (
+          <span> Loading... </span>
         )}
       </Listbox.Options>
     </Listbox>
