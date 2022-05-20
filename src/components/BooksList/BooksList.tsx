@@ -1,14 +1,56 @@
 import React from 'react'
 import BookCard from '../BookCard/BookCard'
+import { useContext } from 'react'
+import { BooksContext } from '../../context/BooksContext'
 
-type Props = {}
+type Book = any
 
-const BookList: React.FC<Props> = ({}) => {
+type Props = {
+  booksData: any
+}
+
+const BookList: React.FC<Props> = ({ booksData }) => {
+  const { results: books, next: followingPage } = booksData
+  const { search } = useContext(BooksContext)
+
+  let searchedBooks = []
+  if (search.length <= 0) {
+    searchedBooks = books
+  } else {
+    searchedBooks = books.filter((book: any) => {
+      const { title, agents: [{ person }] } = book
+      const bookTitle = title.toLowerCase()
+      const bookAuthor = person.toLowerCase()
+      const bookInfo = `${bookTitle} ${bookAuthor}`
+      const searchText = search.toLowerCase()
+      return bookInfo.includes(searchText)
+    })
+  }
+
   return (
-    <div className="grid w-full grid-cols-1 justify-items-center justify-center px-0 text-center md:grid-cols-2 md:max-w-screen-md md:gap-6 lg:grid-cols-3 lg:max-w-screen-lg">
-        {Array.from({length: 3}).map((_, index) => {
-            return <BookCard key={index} />
-        })}
+    <div className="grid w-full grid-cols-1 justify-center justify-items-center px-0 text-center md:max-w-screen-md lg:max-w-screen-lg">
+      {searchedBooks.map((book: Book) => {
+        const {
+          title,
+          agents: [{ person }],
+          subjects,
+          resources,
+          id,
+        } = book
+        const bookUri = resources.filter((resource: any) =>
+          resource.uri.includes('.htm')
+        )[0].uri
+        return (
+          <BookCard
+            title={title}
+            author={person}
+            subjects={subjects}
+            id={id}
+            key={id}
+            bookUri={bookUri}
+          />
+        )
+      })}
     </div>
   )
 }

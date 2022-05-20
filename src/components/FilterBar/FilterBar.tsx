@@ -1,56 +1,39 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Listbox } from '@headlessui/react'
 import Arrow from '../Icons/Arrow'
 
-type Props = {}
-
-interface People {
-  id: number
-  name: string
-  unavailable: boolean
+type Props = {
+  booksData: any
 }
 
-const people: People[] = [
-  { id: 1, name: 'Durward Reynolds', unavailable: false },
-  { id: 2, name: 'Kenton Towne', unavailable: false },
-  { id: 3, name: 'Therese Wunsch', unavailable: false },
-  { id: 4, name: 'Benedict Kessler', unavailable: true },
-  { id: 5, name: 'Katelyn Rohan', unavailable: false },
-]
-
-const FilterBar: React.FC<Props> = () => {
-  const [selectedPerson, setSelectedPerson] = useState<People>(people[0])
+const FilterBar: React.FC<Props> = ({ booksData }) => {
+  const { results } = booksData
+  const [selectedAuthor, setSelectedAuthor] = useState<any>('Select Author...')
 
   return (
-    <Listbox value={selectedPerson} onChange={setSelectedPerson}>
-      <Listbox.Button className="flex w-full max-w-xxs justify-between h-12 items-center rounded-lg bg-card-bg px-5 text-primary">
-        {selectedPerson.name}
+    <Listbox value={selectedAuthor} onChange={setSelectedAuthor}>
+      <Listbox.Button className="flex h-12 w-full max-w-xxs items-center justify-between rounded-lg bg-card-bg px-5 text-primary">
+        {selectedAuthor}
         <Arrow />
       </Listbox.Button>
-      <Listbox.Options className='absolute w-full max-w-xxs top-32 z-10 md:top-16 md:right-0'>
-        {people.map((person) => (
-          <Listbox.Option
-            key={person.id}
-            value={person}
-            disabled={person.unavailable}
-          >
-            {({ active, selected }) => {
-              return (
-                <li
-                  className={`border-t border-main-bg py-1 ${
-                    !person.unavailable
-                      ? 'cursor-pointer'
-                      : 'cursor-not-allowed'
-                  } ${
-                    active ? 'bg-faved text-white' : 'bg-card-bg text-primary'
-                  }`}
-                >
-                  {person.name}
-                </li>
-              )
-            }}
-          </Listbox.Option>
-        ))}
+      <Listbox.Options className="absolute top-32 z-10 w-full max-w-xxs shadow-md md:top-16 md:right-0">
+        {results.map(({ agents }: any) =>
+          agents.map(({ person, id }: any) => (
+            <Listbox.Option key={id} value={person}>
+              {({ active, selected }) => {
+                return (
+                  <li
+                    className={`cursor-pointer} border-t border-main-bg py-1 ${
+                      active ? 'bg-faved text-white' : 'bg-card-bg text-primary'
+                    }`}
+                  >
+                    {person}
+                  </li>
+                )
+              }}
+            </Listbox.Option>
+          ))
+        )}
       </Listbox.Options>
     </Listbox>
   )

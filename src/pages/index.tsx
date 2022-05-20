@@ -5,21 +5,24 @@ import BookList from '../components/BooksList/BooksList'
 import FilterBar from '../components/FilterBar/FilterBar'
 import SearchBar from '../components/SearchBar/SearchBar'
 
-const Home: NextPage = () => {
+type Props = {
+  booksData: any
+}
+
+const Home: NextPage<Props> = ({ booksData }) => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
         <title>Books App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className="flex w-full flex-col items-center justify-center px-0 text-center">
-        <div className='relative flex flex-col items-center justify-items-center w-full mb-10 gap-4 max-h-28 md:flex-row md:w-full md:px-0 md:max-w-screen-md md:justify-between lg:max-w-screen-lg'>
-          <SearchBar />
-          <FilterBar />
-        </div>
-        <BookList />
-      </main>
+        <main className="my-10 flex w-full flex-col items-center justify-center px-0 text-center">
+          <div className="relative mb-10 flex max-h-28 w-full flex-col items-center justify-items-center gap-4 md:w-full md:max-w-screen-md md:flex-row md:justify-between md:px-0">
+            <SearchBar />
+            <FilterBar booksData={booksData} />
+          </div>
+          <BookList booksData={booksData} />
+        </main>
 
       <footer className=""></footer>
     </div>
@@ -27,3 +30,19 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+export async function getServerSideProps() {
+  try {
+    const res = await fetch(
+      'https://gnikdroy.pythonanywhere.com/api/book/?format=json'
+    )
+    const data = await res.json()
+    return {
+      props: {
+        booksData: data,
+      },
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
