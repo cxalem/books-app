@@ -55,7 +55,7 @@ const BookList: React.FC<Props> = ({}) => {
           )
         })
       ) : (
-        <span> Loading... </span>
+        <span className='text-primary font-bold'> Loading... </span>
       )}
     </div>
   )
