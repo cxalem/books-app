@@ -37,22 +37,16 @@ export const BooksProvider = ({ children }: Props) => {
     if (selectedBook) {
       selectedBook.faved = !selectedBook.faved
       setBooksData({ ...booksData })
+      window.localStorage.setItem('faved', JSON.stringify(booksData))
     }
   }
 
   useEffect(() => {
-    const fav: any = window.localStorage.getItem('faved')
-    if (fav !== null || fav !== '') {
-      setFaved(JSON.parse(fav))
+    const localStorageData: any = window.localStorage.getItem('faved')
+    if (localStorageData) {
+      setBooksData(JSON.parse(localStorageData))
     }
   }, [])
-
-  useEffect(() => {
-    const fav: any = window.localStorage.getItem('faved')
-    if (fav !== null || fav !== '') {
-      window.localStorage.setItem('faved', JSON.stringify(faved))
-    }
-  }, [faved])
 
   return (
     <BooksContext.Provider
