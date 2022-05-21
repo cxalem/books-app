@@ -30,7 +30,9 @@ const Home: NextPage<Props> = ({ booksData }) => {
         <BookList />
       </main>
 
-      <footer className=""></footer>
+      <footer className="text-primary pb-5">
+        <p className="text-lg">{`Made with <3 by Alejandro Mena`}</p>
+      </footer>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 import Tag from '../Tag/Tag'
 import Faved from '../Icons/Faved'
 import Link from 'next/link'

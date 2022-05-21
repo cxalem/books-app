@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import { Listbox } from '@headlessui/react'
 import Arrow from '../Icons/Arrow'
 import { BooksContext } from '../../context/BooksContext'

@@ -1,6 +1,3 @@
-import React from 'react'
-import { useState } from 'react'
-import { Combobox } from '@headlessui/react'
 import SearchIcon from '../Icons/SearchIcon'
 import { useContext } from 'react'
 import { BooksContext } from '../../context/BooksContext'

@@ -1,4 +1,3 @@
-import { NextComponentType, NextPageContext } from 'next'
 import React, { useState, createContext, useEffect } from 'react'
 
 type Props = {
@@ -22,8 +21,8 @@ export const BooksContext = createContext<BooksContextType>(
 )
 
 export const BooksProvider = ({ children }: Props) => {
-  const [selectedAuthor, setSelectedAuthor] =
-    useState<string>('Select Author...')
+  const [selectedAuthor, setSelectedAuthor] = useState<string>('Select Author...')
+
   const [search, setSearch] = useState('')
   const onSearchValue = (e: { currentTarget: any }) => {
     setSearch(e.currentTarget.value)
@@ -31,14 +30,11 @@ export const BooksProvider = ({ children }: Props) => {
   
   const [booksData, setBooksData] = useState<any>([])
 
-  const [faved, setFaved] = useState<any>(false)
   const toggleFav = (id: string) => {
     const selectedBook = booksData.results.find((x: any) => x.id === id)
-    if (selectedBook) {
       selectedBook.faved = !selectedBook.faved
       setBooksData({ ...booksData })
       window.localStorage.setItem('faved', JSON.stringify(booksData))
-    }
   }
 
   useEffect(() => {
