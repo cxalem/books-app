@@ -1,6 +1,5 @@
-import React from 'react'
 import BookCard from '../BookCard/BookCard'
-import { useContext } from 'react'
+import { useContext, useRef, useEffect } from 'react'
 import { BooksContext } from '../../context/BooksContext'
 
 type Book = any
@@ -8,10 +7,11 @@ type Book = any
 type Props = {}
 
 const BookList: React.FC<Props> = ({}) => {
-  const { search, selectedAuthor, booksData } = useContext(BooksContext)
+  const { search, selectedAuthor, booksData, setBooksData } = useContext(BooksContext)
   const { results: books, next: followingPage } = booksData
+  const trigger: any = useRef(null)
 
-  let searchedBooks = []
+  let searchedBooks: any = []
   if (search.length <= 0) {
     searchedBooks = books
   } else {
@@ -23,10 +23,30 @@ const BookList: React.FC<Props> = ({}) => {
       const bookTitle = title.toLowerCase()
       const bookAuthor = person.toLowerCase()
       const bookInfo = `${bookTitle} ${bookAuthor} ${selectedAuthor}`
-      const searchText = search.toLowerCase()
-      return bookInfo.includes(searchText)
+      const searchedText = search.toLowerCase()
+      return bookInfo.includes(searchedText)
     })
   }
+
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      const isShowing = entries[0]?.isIntersecting
+      if (isShowing && searchedBooks) {
+        const getNextPage = async () => {
+          const res = await fetch(booksData.next)
+          const data = await res.json()
+          setBooksData({ ...data, results: [...books, ...data.results] })
+          console.log(booksData)
+        }
+        getNextPage()
+      }
+    })
+    observer.observe(trigger.current)
+    return () => observer?.disconnect()
+
+  }, [ booksData ])
+
   return (
     <div className="grid w-full grid-cols-1 justify-center justify-items-center px-0 text-center md:max-w-screen-md lg:max-w-screen-lg">
       {searchedBooks ? (
@@ -37,7 +57,7 @@ const BookList: React.FC<Props> = ({}) => {
             subjects,
             resources,
             id,
-            faved
+            faved,
           } = book
           const bookUri = resources.filter((resource: any) =>
             resource.uri.includes('.htm')
@@ -55,8 +75,9 @@ const BookList: React.FC<Props> = ({}) => {
           )
         })
       ) : (
-        <span className='text-primary font-bold'> Loading... </span>
+        <span className="font-bold text-primary"> Loading... </span>
       )}
+      <div ref={trigger}></div>
     </div>
   )
 }
