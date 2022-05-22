@@ -1,5 +1,5 @@
 import BookCard from '../BookCard/BookCard'
-import { useContext, useRef, useEffect } from 'react'
+import { useContext, useRef, useEffect, useState } from 'react'
 import { BooksContext } from '../../context/BooksContext'
 
 type Book = any
@@ -7,8 +7,10 @@ type Book = any
 type Props = {}
 
 const BookList: React.FC<Props> = ({}) => {
-  const { search, selectedAuthor, booksData, setBooksData } = useContext(BooksContext)
+  const { search, selectedAuthor, booksData, setBooksData } =
+    useContext(BooksContext)
   const { results: books, next: followingPage } = booksData
+  const [isShown, setIsShown] = useState<boolean>()
   const trigger: any = useRef(null)
 
   let searchedBooks: any = []
@@ -28,24 +30,24 @@ const BookList: React.FC<Props> = ({}) => {
     })
   }
 
-  
   useEffect(() => {
-    const observer = new IntersectionObserver(entries => {
+    const observer = new IntersectionObserver((entries) => {
       const isShowing = entries[0]?.isIntersecting
       if (isShowing && searchedBooks) {
         const getNextPage = async () => {
           const res = await fetch(booksData.next)
           const data = await res.json()
           setBooksData({ ...data, results: [...books, ...data.results] })
-          console.log(booksData)
+          setIsShown(true)
         }
         getNextPage()
+      } else {
+        setIsShown(false)
       }
     })
     observer.observe(trigger.current)
     return () => observer?.disconnect()
-
-  }, [ booksData ])
+  }, [isShown])
 
   return (
     <div className="grid w-full grid-cols-1 justify-center justify-items-center px-0 text-center md:max-w-screen-md lg:max-w-screen-lg">
@@ -77,7 +79,7 @@ const BookList: React.FC<Props> = ({}) => {
       ) : (
         <span className="font-bold text-primary"> Loading... </span>
       )}
-      <div ref={trigger}></div>
+      {<div ref={trigger}></div>}
     </div>
   )
 }
