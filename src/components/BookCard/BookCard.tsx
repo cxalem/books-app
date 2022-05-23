@@ -7,12 +7,12 @@ import Unfaved from '../Icons/Unfaved'
 import { BooksContext } from '../../context/BooksContext'
 
 type Props = {
-  title: string
-  author: string
-  subjects: string[]
-  bookUri: any
-  id: number
-  faved: boolean
+  title?: string
+  author?: string
+  subjects?: any
+  bookUri?: any
+  id?: number
+  faved?: boolean
 }
 
 const BookCard: React.FC<Props> = ({ title, author, subjects, bookUri, id, faved }) => {
@@ -43,7 +43,7 @@ const BookCard: React.FC<Props> = ({ title, author, subjects, bookUri, id, faved
             </button>
           </div>
           <div className="flex max-w-xxs flex-wrap gap-1 md:max-w-full md:gap-2">
-            {filteredSubjects.map((subject: string) => (
+            {filteredSubjects?.map((subject: string) => (
               <Tag key={subject}>{subject}</Tag>
             ))}
           </div>

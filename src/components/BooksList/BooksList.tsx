@@ -18,12 +18,9 @@ const BookList: React.FC<Props> = ({}) => {
     searchedBooks = books
   } else {
     searchedBooks = books.filter((book: any) => {
-      const {
-        title,
-        agents: [{ person }],
-      } = book
+      const { title } = book
       const bookTitle = title.toLowerCase()
-      const bookAuthor = person.toLowerCase()
+      const bookAuthor = book.agents[0]?.person?.toLowerCase()
       const bookInfo = `${bookTitle} ${bookAuthor} ${selectedAuthor}`
       const searchedText = search.toLowerCase()
       return bookInfo.includes(searchedText)
@@ -33,13 +30,13 @@ const BookList: React.FC<Props> = ({}) => {
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       const isShowing = entries[0]?.isIntersecting
+      const getNextPage = async () => {
+        const res = await fetch(followingPage)
+        const data = await res.json()
+        setBooksData({ ...data, results: [...books, ...data.results] })
+        setIsShown(true)
+      }
       if (isShowing && searchedBooks) {
-        const getNextPage = async () => {
-          const res = await fetch(booksData.next)
-          const data = await res.json()
-          setBooksData({ ...data, results: [...books, ...data.results] })
-          setIsShown(true)
-        }
         getNextPage()
       } else {
         setIsShown(false)
@@ -55,7 +52,6 @@ const BookList: React.FC<Props> = ({}) => {
         searchedBooks.map((book: Book) => {
           const {
             title,
-            agents: [{ person }],
             subjects,
             resources,
             id,
@@ -63,11 +59,11 @@ const BookList: React.FC<Props> = ({}) => {
           } = book
           const bookUri = resources.filter((resource: any) =>
             resource.uri.includes('.htm')
-          )[0].uri
+          )[0]?.uri
           return (
             <BookCard
               title={title}
-              author={person}
+              author={book.agents[0]?.person}
               subjects={subjects}
               id={id}
               key={id}
@@ -79,7 +75,8 @@ const BookList: React.FC<Props> = ({}) => {
       ) : (
         <span className="font-bold text-primary"> Loading... </span>
       )}
-      {<div ref={trigger}></div>}
+      { !isShown && <span className="font-bold text-primary my-5"> Loading... </span> }
+      <div ref={trigger}></div>
     </div>
   )
 }
