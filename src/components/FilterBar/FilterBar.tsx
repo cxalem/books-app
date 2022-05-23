@@ -24,7 +24,7 @@ const FilterBar: React.FC<Props> = ({}) => {
         {selectedAuthor}
         <Arrow />
       </Listbox.Button>
-      <Listbox.Options className="absolute top-32 z-10 w-full max-w-xxs shadow-md md:top-16 md:right-0">
+      <Listbox.Options className="absolute top-32 z-10 w-full max-w-xxs shadow-md md:top-20 md:right-5">
         {results ? (
           results.map(({ agents }: any) =>
             agents.map(({ person, id }: any) => (

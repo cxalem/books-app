@@ -17,20 +17,22 @@ const Home: NextPage<Props> = ({ booksData }) => {
   }, [booksData])
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="flex min-h-screen flex-col items-center justify-center">
       <Head>
         <title>Books App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="my-10 flex w-full flex-col items-center justify-center px-0 text-center">
-        <div className="relative mb-10 flex max-h-28 w-full flex-col items-center justify-items-center gap-4 md:w-full md:max-w-screen-md md:flex-row md:justify-between md:px-0">
-          <SearchBar />
-          <FilterBar />
+      <main className=" flex w-full flex-col items-center justify-center px-0 text-center md:my-10">
+        <div className="relative top-0 mb-10 flex max-h-28 w-full flex-col items-center justify-items-center gap-4 md:w-full md:max-w-screen-md md:flex-row md:justify-between md:px-0">
+          <div className="fixed z-10 flex max-h-28 rounded-b-xl shadow-lg w-full flex-col items-center justify-items-center gap-4 bg-bg-color py-4 md:w-full md:max-w-screen-md md:flex-row md:justify-between md:px-5">
+            <SearchBar />
+            <FilterBar />
+          </div>
         </div>
         <BookList />
       </main>
 
-      <footer className="text-primary pb-5">
+      <footer className="pb-5 text-primary">
         <p className="text-lg">{`Made with <3 by Alejandro Mena`}</p>
       </footer>
     </div>

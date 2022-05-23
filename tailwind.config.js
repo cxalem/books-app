@@ -10,6 +10,7 @@ module.exports = {
         "card-bg": "#171830",
         "main-bg": "#0C0D1C",
         "faved": "#322659",
+        "bg-color": "#0C0D1C",
       },
       maxWidth: {
         "xxs":"16rem"

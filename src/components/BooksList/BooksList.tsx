@@ -47,7 +47,7 @@ const BookList: React.FC<Props> = ({}) => {
   }, [isShown])
 
   return (
-    <div className="grid w-full grid-cols-1 justify-center justify-items-center px-0 text-center md:max-w-screen-md lg:max-w-screen-lg">
+    <div className="grid my-20 w-full grid-cols-1 justify-center justify-items-center px-0 text-center md:my-0 md:max-w-screen-md lg:max-w-screen-lg">
       {searchedBooks ? (
         searchedBooks.map((book: Book) => {
           const {
