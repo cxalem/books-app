@@ -1,8 +1,7 @@
 import BookCard from '../BookCard/BookCard'
 import { useContext, useRef, useEffect, useState } from 'react'
 import { BooksContext } from '../../context/BooksContext'
-
-type Book = any
+import type { Book } from "../../../types"
 
 type Props = {}
 
@@ -13,11 +12,11 @@ const BookList: React.FC<Props> = ({}) => {
   const [isShown, setIsShown] = useState<boolean>()
   const trigger: any = useRef(null)
 
-  let searchedBooks: any = []
+  let searchedBooks: Book[] = []
   if (search.length <= 0) {
     searchedBooks = books
   } else {
-    searchedBooks = books.filter((book: any) => {
+    searchedBooks = books.filter((book: Book) => {
       const { title } = book
       const bookTitle = title.toLowerCase()
       const bookAuthor = book.agents[0]?.person?.toLowerCase()
@@ -75,7 +74,6 @@ const BookList: React.FC<Props> = ({}) => {
       ) : (
         <span className="font-bold text-primary"> Loading... </span>
       )}
-      { !isShown && <span className="font-bold text-primary my-5"> Loading... </span> }
       <div ref={trigger}></div>
     </div>
   )
