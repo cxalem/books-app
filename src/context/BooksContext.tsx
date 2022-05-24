@@ -32,6 +32,15 @@ export const BooksProvider = ({ children }: Props) => {
       setBooksData(JSON.parse(localStorageData))
     }
   }, [])
+  
+  const { results: books, next: followingPage } = booksData
+  const [isShown, setIsShown] = useState<boolean>(false)
+  const getNextPage = async () => {
+    const res = await fetch(followingPage)
+    const data = await res.json()
+    setBooksData({ ...data, results: [...books, ...data.results] })
+    setIsShown(true)
+  }
 
   return (
     <BooksContext.Provider
@@ -43,7 +52,11 @@ export const BooksProvider = ({ children }: Props) => {
         setSearch,
         toggleFav,
         setBooksData,
-        booksData
+        booksData,
+        isShown,
+        setIsShown,
+        books,
+        getNextPage,
       }}
     >
       {children}
