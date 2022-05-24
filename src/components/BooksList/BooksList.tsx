@@ -1,13 +1,15 @@
 import BookCard from '../BookCard/BookCard'
 import { useContext, useRef, useEffect, useState } from 'react'
 import { BooksContext } from '../../context/BooksContext'
-import type { Book } from '../../../types'
+import type { Book } from "../../../types"
 
 type Props = {}
 
 const BookList: React.FC<Props> = ({}) => {
-  const { search, selectedAuthor, isShown, setIsShown, getNextPage, books } =
+  const { search, selectedAuthor, booksData, setBooksData } =
     useContext(BooksContext)
+  const { results: books, next: followingPage } = booksData
+  const [isShown, setIsShown] = useState<boolean>()
   const trigger: any = useRef(null)
 
   let searchedBooks: Book[] = []
@@ -27,6 +29,12 @@ const BookList: React.FC<Props> = ({}) => {
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       const isShowing = entries[0]?.isIntersecting
+      const getNextPage = async () => {
+        const res = await fetch(followingPage)
+        const data = await res.json()
+        setBooksData({ ...data, results: [...books, ...data.results] })
+        setIsShown(true)
+      }
       if (isShowing && searchedBooks) {
         getNextPage()
       } else {
@@ -38,10 +46,16 @@ const BookList: React.FC<Props> = ({}) => {
   }, [isShown])
 
   return (
-    <div className="my-20 grid w-full grid-cols-1 justify-center justify-items-center px-0 text-center md:my-0 md:max-w-screen-md lg:max-w-screen-lg">
+    <div className="grid my-20 w-full grid-cols-1 justify-center justify-items-center px-0 text-center md:my-0 md:max-w-screen-md lg:max-w-screen-lg">
       {searchedBooks ? (
         searchedBooks.map((book: Book) => {
-          const { title, subjects, resources, id, faved } = book
+          const {
+            title,
+            subjects,
+            resources,
+            id,
+            faved,
+          } = book
           const bookUri = resources.filter((resource: any) =>
             resource.uri.includes('.htm')
           )[0]?.uri
@@ -60,9 +74,7 @@ const BookList: React.FC<Props> = ({}) => {
       ) : (
         <span className="font-bold text-primary"> Loading... </span>
       )}
-      {!isShown && searchedBooks && (
-        <span className="my-5 font-bold text-primary"> Loading... </span>
-      )}
+      { !isShown && searchedBooks && <span className="font-bold text-primary my-5"> Loading... </span> }
       <div ref={trigger}></div>
     </div>
   )

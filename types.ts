@@ -37,8 +37,4 @@ export type BooksContextType = {
   toggleFav: (value: string) => void
   booksData: BookData
   setBooksData: (value: BookData) => void
-  isShown: boolean
-  setIsShown: (value: boolean) => void
-  books: Book[]
-  getNextPage: () => Promise<void>
 }
