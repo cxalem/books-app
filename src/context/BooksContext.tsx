@@ -12,7 +12,7 @@ export const BooksContext = createContext<BooksContextType>(
 export const BooksProvider = ({ children }: Props) => {
   const [selectedAuthor, setSelectedAuthor] = useState<string>('Select Author...')
 
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState<string>('')
   const onSearchValue = (e: any) => {
     setSearch(e.currentTarget.value)
   }

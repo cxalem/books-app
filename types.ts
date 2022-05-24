@@ -18,7 +18,7 @@ export type Book = {
   subjects: string[]
   agents: Author[]
   resources: Resource[]
-  faved: boolean
+  faved?: boolean
 }
 
 export type BookData = {
