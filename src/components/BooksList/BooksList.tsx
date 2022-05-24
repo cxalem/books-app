@@ -74,6 +74,7 @@ const BookList: React.FC<Props> = ({}) => {
       ) : (
         <span className="font-bold text-primary"> Loading... </span>
       )}
+      { !isShown && searchedBooks && <span className="font-bold text-primary my-5"> Loading... </span> }
       <div ref={trigger}></div>
     </div>
   )
