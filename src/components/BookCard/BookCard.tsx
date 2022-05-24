@@ -9,16 +9,16 @@ import { BooksContext } from '../../context/BooksContext'
 type Props = {
   title?: string
   author?: string
-  subjects?: any
-  bookUri?: any
-  id?: number
+  subjects: string[]
+  bookUri?: string
+  id: string
   faved?: boolean
 }
 
 const BookCard: React.FC<Props> = ({ title, author, subjects, bookUri, id, faved }) => {
   const { toggleFav } = useContext(BooksContext)
 
-  const handleFav = (e: { currentTarget: any }) => {
+  const handleFav = () => {
     toggleFav(id)
   }
   

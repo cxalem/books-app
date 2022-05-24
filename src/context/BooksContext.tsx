@@ -1,19 +1,8 @@
-import React, { useState, createContext, useEffect } from 'react'
+import React, { useState, createContext, useEffect, ChangeEventHandler } from 'react'
+import type { BooksContextType, Book, BookData } from '../../types'
 
 type Props = {
   children: JSX.Element | JSX.Element[]
-}
-
-type BooksContextType = {
-  search: string
-  onSearchValue?: (value: any) => void
-  selectedAuthor?: string
-  setSelectedAuthor?: any
-  setSearch?: any
-  faved?: any
-  toggleFav?: any
-  booksData?: any
-  setBooksData?: any
 }
 
 export const BooksContext = createContext<BooksContextType>(
@@ -24,21 +13,21 @@ export const BooksProvider = ({ children }: Props) => {
   const [selectedAuthor, setSelectedAuthor] = useState<string>('Select Author...')
 
   const [search, setSearch] = useState('')
-  const onSearchValue = (e: { currentTarget: any }) => {
+  const onSearchValue = (e: any) => {
     setSearch(e.currentTarget.value)
   }
   
-  const [booksData, setBooksData] = useState<any>([])
+  const [booksData, setBooksData] = useState<BookData>({} as BookData)
 
   const toggleFav = (id: string) => {
-    const selectedBook = booksData.results.find((x: any) => x.id === id)
+    const selectedBook: any = booksData.results.find((x: Book) => x.id === id)
       selectedBook.faved = !selectedBook.faved
       setBooksData({ ...booksData })
       window.localStorage.setItem('faved', JSON.stringify(booksData))
   }
 
   useEffect(() => {
-    const localStorageData: any = window.localStorage.getItem('faved')
+    const localStorageData: string | null = window.localStorage.getItem('faved')
     if (localStorageData) {
       setBooksData(JSON.parse(localStorageData))
     }
